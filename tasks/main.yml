@@ -1,0 +1,34 @@
+---
+# tasks file for ci-env-heat-role
+- name: Create temporary dir for templates
+  file:
+    path: "{{ ansible_remote_tmp }}/heat_templates"
+    state: directory
+  register: tmp_dir
+  notify:
+    - remove_tmp_dirs
+
+- name: Ensure target template dir structure exists
+  file:
+    path: '{{ tmp_dir.path }}/{{ item.path }}'
+    state: directory
+  with_filetree: templates/heat/
+  when: item.state == 'directory'
+
+- debug:
+    msg: "{{ item.path }}"
+  with_filetree: templates/heat/
+
+- name: Ensure heat templates are populated from templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ tmp_dir.path }}/{{ item.path | basename | regex_replace('\\.j2','')}}"
+  with_filetree: templates/heat/
+  when: item.state == 'file'
+
+#- name: Bootstrap CI infra and VMs
+#  os_stack:
+#    name: test-stack
+#    region_name: "{{ ci_env_heat_region }}"
+#    rollback: true
+#    state: "{{ ci_env_heat_state }}"

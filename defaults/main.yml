@@ -1,0 +1,7 @@
+---
+# defaults file for ci-env-heat-role
+
+# Heat variables
+ci_env_heat_template_version: 2016-10-14 # Newton
+ci_env_heat_region: Kna1
+ci_env_heat_state: present

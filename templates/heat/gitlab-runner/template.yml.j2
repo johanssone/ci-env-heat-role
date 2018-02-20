@@ -1,0 +1,16 @@
+---
+heat_template_version: {{ ci_env_heat_template_version }}
+parameters:
+  gitlab_runner_num_servers_min:
+    type: number
+
+  gitlab_runner_num_servers_min:
+    type: number
+
+asg_gitlab_runner:
+  type: OS::Heat::AutoScalingGroup
+  properties:
+    min_size: { get_param: gitlab_runner_num_servers_min }
+    max_size: { get_param: gitlab_runner_num_servers_max }
+    resource: OS::Nova::Server
+    properties:

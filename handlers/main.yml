@@ -1,0 +1,7 @@
+---
+# handlers file for ci-env-heat-role
+
+- name: remove_tmp_dirs
+  file:
+    path: "{{ ansible_remote_tmp }}/heat_templates"
+    state: absent
