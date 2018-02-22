@@ -15,20 +15,16 @@
   with_filetree: templates/heat/
   when: item.state == 'directory'
 
-- debug:
-    msg: "{{ item.path }}"
-  with_filetree: templates/heat/
-
 - name: Ensure heat templates are populated from templates
   template:
     src: "{{ item.src }}"
-    dest: "{{ tmp_dir.path }}/{{ item.path | basename | regex_replace('\\.j2','')}}"
+    dest: "{{ tmp_dir.path }}/{{ item.path | regex_replace('\\.j2','')}}"
   with_filetree: templates/heat/
   when: item.state == 'file'
 
-#- name: Bootstrap CI infra and VMs
-#  os_stack:
-#    name: test-stack
-#    region_name: "{{ ci_env_heat_region }}"
-#    rollback: true
-#    state: "{{ ci_env_heat_state }}"
+- name: Bootstrap CI infra and VMs
+  os_stack:
+    name: test-stack
+    rollback: true
+    state: "{{ ci_heat_state }}"
+    template: "{{ tmp_dir.path }}/main.yaml"

@@ -1,0 +1,36 @@
+---
+
+heat_template_version: {{ ci_heat_template_version }}
+
+parameters:
+  mgmt_net_cidr:
+    type: string
+
+  internal_net_cidr:
+    type: string
+
+resources:
+
+  mgmt_net:
+    type: OS::Neutron::Net
+
+  internal_net:
+    type: OS::Neutron::Net
+
+  mgmt_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network: { get_resource: mgmt_net}
+      cidr: { get_param: mgmt_net_cidr }
+
+  internal_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network: { get_resource: internal_net}
+      cidr: { get_param: internal_net_cidr }
+
+outputs:
+  mgmt_net:
+    value: { get_resource: mgmt_net }
+  internal_net:
+    value: { get_resource: internal_net, name }

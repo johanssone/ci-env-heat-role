@@ -1,0 +1,42 @@
+---
+
+heat_template_version: {{ ci_heat_template_version }}
+
+parameters:
+  # Image parameters
+  awx_image:
+    type: string
+    default: {{ ci_heat_awx_image }}
+
+  awx_flavor:
+    type: string
+    default: {{ ci_heat_awx_flavor }}
+
+
+  # Network configuration
+  mgmt_net_cidr:
+    type: string
+    default: {{ ci_heat_mgmt_net_cidr }}
+
+  internal_net_cidr:
+    type: string
+    default: {{ ci_heat_internal_net_cidr }}
+
+
+resources:
+  infra:
+    type: infra/infra.yaml
+    properties:
+      mgmt_net_cidr: { get_param: mgmt_net_cidr }
+      internal_net_cidr: { get_param: internal_net_cidr }
+
+  awx_server:
+    type: awx/awx.yaml
+    properties:
+      image: { get_param: awx_image}
+      flavor: { get_param: awx_flavor}
+      network: { get_attr: [ infra, mgmt_net]}
+
+      #key_name: {get_param: key}
+
+outputs:

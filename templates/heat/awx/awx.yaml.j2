@@ -1,0 +1,25 @@
+---
+heat_template_version: {{ ci_heat_template_version }}
+
+parameters:
+
+  image:
+    type: string
+  flavor:
+    type: string
+  network:
+    type: string
+
+resources:
+  awx_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: network }
+
+  awx_server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      networks:
+        - port: { get_resource: awx_port }

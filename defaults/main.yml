@@ -2,6 +2,14 @@
 # defaults file for ci-env-heat-role
 
 # Heat variables
-ci_env_heat_template_version: 2016-10-14 # Newton
-ci_env_heat_region: Kna1
-ci_env_heat_state: present
+ci_heat_template_version: 2016-10-14 # Newton
+ci_heat_state: present
+
+# Image defaults
+ci_heat_awx_image: "Ubuntu 16.04 Xenial Xerus"
+ci_heat_awx_flavor: "4C-4GB-50GB"
+ci_heat_gitlab_image: "Ubuntu 16.04 Xenial Xerus"
+
+# Network
+ci_heat_mgmt_net_cidr: "10.0.0.0/24"
+ci_heat_internal_net_cidr: "192.168.0.0/24"
